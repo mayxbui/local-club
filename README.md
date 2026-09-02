@@ -1,8 +1,8 @@
-# Local Club
+# Greencastle Local Club
 
 A two-sided web app for a small downtown: shoppers discover local businesses and earn loyalty points, merchants check customers in from their own device. Built as a hackathon project and since rebuilt into a cleaner, more resilient version.
 
-**Live demo:** _add URL_
+**Live demo:** [Local Club Website](https://local-club.vercel.app/)
 
 **Stack:** React 19 · React Router 7 · Firebase (Auth + Firestore) · Google Maps · CI/CD via Vercel
 
