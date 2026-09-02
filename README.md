@@ -1,90 +1,117 @@
 # Local Club
 
-## 🟢 Live Demo  
-Check out the deployed web application here:  
-👉 [https://hackathon25-lake.vercel.app/](https://hackathon25-lake.vercel.app/)
+A two-sided web app for a small downtown: shoppers discover local businesses and earn
+loyalty points, merchants check customers in from their own device. Built as a hackathon
+project and since rebuilt into a cleaner, more resilient version.
+
+**Live demo:** _add URL_ · **Stack:** React 19 · React Router 7 · Firebase (Auth + Firestore) · Google Maps · CI/CD via GitHub Actions
 
 ---
 
-## 🌟 Overview  
-**Local Club** is an online platform designed to help Greencastle residents discover, support, and engage with local businesses. Through our intuitive business directory and innovative loyalty rewards system, Local Club makes it easier for consumers to find hidden gems while incentivizing them to shop locally.  
+## What it does
 
-Our mission is to build a stronger, more connected Greencastle economy by empowering local businesses and encouraging community-driven support.
-
----
-
-## 🚩 Problem  
-Small businesses in Greencastle often face challenges with visibility and customer retention. With limited promotion and word-of-mouth marketing, many shops and service providers remain under the radar.
-
-> For example: Many locals may not know that *Bodega* offers unique imports like “Ba Co Gai” rice paper!
-
-**Key Insight:** There’s a need for a centralized platform to bridge this gap and foster visibility, engagement, and growth for local businesses.
+| Area | Feature |
+| --- | --- |
+| Discover | Directory of 19 downtown businesses with hours, ratings, phone, and an interactive Google Map (marker selection pans the map). |
+| Loyalty | Each member has a personal QR code. Staff open the **Check-In** view, scan it with the device camera, and award points. |
+| Deals | Members spend points on rotating deals; a redeemed deal renders a scannable barcode to show at the register. |
+| Favorites | Heart a business; the list persists to the user's profile with an optimistic UI. |
 
 ---
 
-## 🎯 Mission  
-At **Local Club**, our mission is to strengthen Greencastle’s economy by:
+## Tech stack
 
-- Centralizing business discovery  
-- Rewarding local shopping behavior  
-- Empowering small business owners  
-- Cultivating a culture of community support  
-
-Whether you’re a resident, student, or visitor, Local Club helps you discover, support, and engage with Greencastle’s vibrant local scene.
-
----
-
-## ✨ Features  
-
-### Support for Non-Food-Based Businesses  
-Local Club highlights *all* types of businesses—not just food and drink. From boutiques to craft stores, we ensure every business has a voice.
-
-### Boosting Local Tourism  
-Uncover local treasures with ease. Local Club promotes hidden gems and keeps the community updated on new deals, experiences, and promotions.
-
-### Loyalty Points System  
-Earn points by checking in at local businesses and redeem them for exclusive deals and discounts. This not only benefits customers but also drives repeat traffic and loyalty for businesses.
+- **Frontend:** React 19, Create React App, React Router 7 (`BrowserRouter`, central route table in [App.js](src/App.js), nav bar hidden per-route via `useLocation`).
+- **Auth:** Firebase Authentication (email/password).
+- **Database:** Cloud Firestore — `Users` documents (points, favorites, redeemed deals) and an append-only `Checkins` collection.
+- **Maps:** `@react-google-maps/api` with `useJsApiLoader`.
+- **QR / barcode:** `qrcode.react` (member code), `html5-qrcode` (staff scanner), `react-barcode` (redeemed deal).
+- **State:** React Context — no Redux.
+- **Feedback:** `react-toastify`.
+- **Config:** API keys via `REACT_APP_*` environment variables; `.env` is git-ignored and secrets are injected in CI.
 
 ---
 
-## 🚀 Future Enhancements  
+## Architecture & decisions
 
-### Platform Expansion  
-- Expand beyond Greencastle  
-- Centralized menu system  
-- Mobile app development  
-- Third-party login support (Gmail, Facebook)
+### Client-only, Firebase as the backend
+There is no custom server. Firebase Auth and Firestore cover identity, persistence, and
+real-time reads, which kept the surface area small and let the loyalty loop ship fast.
+Trade-off: business logic that ideally lives on a server (points math, rate limiting) is
+currently enforced on the client and should move to Firestore Security Rules / Cloud
+Functions before real use.
 
-### Enhanced User Interaction  
-- Social networking features  
-- Commenting & reviews on deals  
-- Leaderboards for top users  
-- Referral system with rewards  
-- Social media sharing buttons  
-- Enhanced user profiles (avatars, history, display names)  
-- Mystery Box reward feature  
+### One auth context as the single source of truth
+[UserContext.js](src/components/contexts/UserContext.js) subscribes once to
+`onAuthStateChanged` and exposes `userDetails`, `loading`, and the favorites API to the
+whole tree. Chosen over prop-drilling and over Redux because the app has essentially one
+shared domain object (the signed-in user).
 
-### Support & Help  
-- Dedicated FAQ section for common queries
+- **Degrades gracefully:** if the Firestore profile is missing, the context still seeds
+  `userDetails` from the auth user (name falls back to the email prefix) so dependent
+  pages like Scan don't crash.
+- **`loading` gate:** routes wait for the first auth resolution instead of flashing the
+  login screen.
+
+### Optimistic updates with rollback
+Toggling a favorite updates local state immediately, writes to Firestore with
+`{ merge: true }`, and rolls back to the previous array if the write fails. The heart
+reacts instantly; a dropped network request doesn't leave the UI lying.
+
+### The loyalty loop is a small state machine
+[CheckIn.js](src/components/checkin/CheckIn.js) is the merchant side:
+
+- `scanning → review → success` phases keep the camera, the confirm step, and the receipt
+  visually separate.
+- A `Map` of `uid → timestamp` enforces a 60-second cooldown so the same code can't be
+  awarded twice while the panel is open.
+- Points are written with Firestore `increment()` — an atomic server-side update, not a
+  read-modify-write race.
+- Every award also appends a row to `Checkins` (who, how many, when) as an audit trail.
+- Per-frame decode failures from the camera are expected and ignored; only real errors
+  surface.
+
+### Derived data stays out of state
+[Home.js](src/components/home/Home.js) computes average rating, top-rated lists, and a
+regex-based "is this a restaurant" classification with `useMemo` from the source data
+rather than storing duplicated state.
+
+### Seed data now, migration path later
+Business and deal content lives in [LocalsData.js](src/components/locals/LocalsData.js)
+and [DealsData.js](src/components/deals/DealsData.js). A one-off
+[UploadData.js](src/components/uploadData/UploadData.js) component pushes it into Firestore
+when needed. Fast to iterate on during the build; the read path is already written to swap
+to a live collection.
 
 ---
 
-## 🛠 Built With  
+## Deployment
 
-- **React.js** – Frontend framework  
-- **JavaScript, HTML, CSS** – Structure & styling  
-- **Firebase Firestore** – Real-time database  
-- **Firebase Authentication** – User auth & security  
-- **Google Maps API** – Maps integration  
-- **Vercel** – Deployment and hosting  
-- **React Icons, Barcode, Toastify** – UI enhancements and alerts
+Continuous deployment from the `main` branch on GitHub. On every push, a **GitHub Actions**
+workflow installs dependencies, injects the Firebase and Google Maps keys as build-time
+secrets, runs `npm run build`, and publishes the optimized static bundle to the host.
 
 ---
 
-## 🤝 Contributing  
-We welcome contributions! If you'd like to improve this project or suggest new features, feel free to fork the repo, submit pull requests, or open issues.
+## Running locally
+
+```bash
+npm install
+
+# .env in the project root
+REACT_APP_FIREBASE_API_KEY=your_key
+REACT_APP_GOOGLE_MAPS_KEY=your_key
+
+npm start        # http://localhost:3000
+npm run build    # production bundle
+```
 
 ---
 
-## 📬 Contact  
-Have questions, feedback, or suggestions? Reach out to the team or open an issue on this repository.
+## Known limitations / next steps
+
+- Move points and redemption logic behind Firestore Security Rules and/or Cloud Functions.
+- Replace the local deals array with a live Firestore collection (read path is ready).
+- A few flows use `window.location.href` instead of the router — migrate to `navigate()`.
+- Leaderboard, mystery box, and weekly challenges are UI mockups, not yet wired up.
+- Test setup is scaffolded (`@testing-library/*`) but coverage is thin.
