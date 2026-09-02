@@ -11,10 +11,22 @@ import present from "../../assets/present.png";
 import task from "../../assets/task.png";
 
 import { toast } from "react-toastify";
-import { FaUserCircle } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaFire,
+  FaSearch,
+  FaStar,
+  FaTag,
+  FaMapMarkerAlt,
+  FaTrophy,
+  FaRegCopy,
+  FaCheckCircle,
+} from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 
 import "./Deals.css";
+
+const POINTS_GOAL = 300;
 
 const Deals = () => {
   const { userDetails } = useUser();
@@ -72,6 +84,13 @@ const Deals = () => {
     toast.success("Deal redeemed successfully!");
   };
 
+  const copyReferral = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText("CHECKIN10");
+      toast.success("Referral code copied!");
+    }
+  };
+
   const filteredDeals = deals.filter((deal) =>
     deal.locations.some((loc) =>
       loc.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -84,73 +103,122 @@ const Deals = () => {
       : deals.filter((deal) => myDeals.includes(deal.title));
 
   const isMyDeal = selectedDeal && myDeals.includes(selectedDeal.title);
+  const pointsLeft = Math.max(POINTS_GOAL - userPoints, 0);
+  const progress = Math.min((userPoints / POINTS_GOAL) * 100, 100);
 
   return (
-    <div className="deals-page">
-      <div className="deals-list">
+    <div className="dl-page">
+      <div className="dl-main">
         {!selectedDeal ? (
           <>
-            <div className="tab-buttons">
-              <button
-                className={tab === "hot" ? "active" : ""}
-                onClick={() => setTab("hot")}
-              >
-                HOT DEALS
-              </button>
-              <button
-                className={tab === "my" ? "active" : ""}
-                onClick={() => setTab("my")}
-              >
-                MY DEALS
-              </button>
-            </div>
-
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search by location..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-
-            {displayDeals.map((deal, index) => (
-              <DealsCard
-                key={index}
-                deal={deal}
-                onInfoClick={() => setSelectedDeal(deal)}
-                tab={tab}
-              />
-            ))}
-          </>
-        ) : (
-          <div className="info-panel">
-            <IoIosCloseCircle
-              className="close-btn"
-              onClick={() => setSelectedDeal(null)}
-            />
-
-            <img
-              src={selectedDeal.image}
-              alt={selectedDeal.title}
-              className="info-img"
-            />
-
-            <div className="info-description">
-              <div className="info-header">
-                <h2>{selectedDeal.title}</h2>
-                <h2 className="rating">{selectedDeal.points} pts</h2>
+            <header className="dl-hero">
+              <div className="dl-hero__text">
+                <span className="dl-hero__eyebrow">
+                  <FaFire /> Local Club Deals
+                </span>
+                <h1>
+                  Two spots, one deal, <span>double the fun</span>
+                </h1>
+                <p>
+                  Spend your points on hand-picked pairs of local favorites —
+                  a bite here, a treat there.
+                </p>
               </div>
 
-              <hr />
+              <div className="dl-points-card">
+                <div className="dl-points-card__top">
+                  <span>Your points</span>
+                  <FaStar />
+                </div>
+                <div className="dl-points-card__value">{userPoints}</div>
+                <div className="dl-points-bar">
+                  <div
+                    className="dl-points-bar__fill"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <div className="dl-points-card__hint">
+                  {pointsLeft > 0
+                    ? `${pointsLeft} pts to your next big reward`
+                    : "You've unlocked a reward — go treat yourself!"}
+                </div>
+              </div>
+            </header>
 
-              <p>{selectedDeal.description}</p>
+            <div className="dl-controls">
+              <div className="dl-tabs">
+                <button
+                  className={tab === "hot" ? "is-active" : ""}
+                  onClick={() => setTab("hot")}
+                >
+                  <FaFire /> Hot Deals
+                </button>
+                <button
+                  className={tab === "my" ? "is-active" : ""}
+                  onClick={() => setTab("my")}
+                >
+                  <FaCheckCircle /> My Deals
+                </button>
+              </div>
 
-              <hr />
+              <div className="dl-search">
+                <FaSearch />
+                <input
+                  type="text"
+                  placeholder="Search by location…"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
 
-              <div className="info-columns">
+            {displayDeals.length > 0 ? (
+              <div className="dl-grid">
+                {displayDeals.map((deal, index) => (
+                  <DealsCard
+                    key={index}
+                    deal={deal}
+                    onInfoClick={() => setSelectedDeal(deal)}
+                    tab={tab}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="dl-empty">
+                <FaTag />
+                <p>
+                  {tab === "my"
+                    ? "No claimed deals yet. Redeem your first pairing from Hot Deals!"
+                    : "No deals match that location — try another spot."}
+                </p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="dl-detail">
+            <button
+              type="button"
+              className="dl-detail__close"
+              onClick={() => setSelectedDeal(null)}
+            >
+              <IoIosCloseCircle />
+            </button>
+
+            <div className="dl-detail__media">
+              <img src={selectedDeal.image} alt={selectedDeal.title} />
+              <span className="dl-detail__pts">{selectedDeal.points} pts</span>
+            </div>
+
+            <div className="dl-detail__body">
+              <h2>{selectedDeal.title}</h2>
+              <p className="dl-detail__tagline">{selectedDeal.tagline}</p>
+              <p className="dl-detail__desc">{selectedDeal.description}</p>
+
+              <div className="dl-detail__cols">
                 <div>
-                  <h4>Discounts:</h4>
+                  <h4>
+                    <FaTag /> Discounts
+                  </h4>
                   <ul>
                     {selectedDeal.discounts.map((d, i) => (
                       <li key={i}>{d}</li>
@@ -158,7 +226,9 @@ const Deals = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4>Locations:</h4>
+                  <h4>
+                    <FaMapMarkerAlt /> Locations
+                  </h4>
                   <ul>
                     {selectedDeal.locations.map((l, i) => (
                       <li key={i}>{l}</li>
@@ -167,16 +237,25 @@ const Deals = () => {
                 </div>
               </div>
 
-              <div className="deal-action">
+              <div className="dl-detail__action">
                 {tab === "my" && isMyDeal ? (
-                  <Barcode
-                    value={selectedDeal.title}
-                    height={60}
-                    displayValue={false}
-                  />
+                  <div className="dl-barcode">
+                    <Barcode
+                      value={selectedDeal.title}
+                      height={60}
+                      displayValue={false}
+                    />
+                    <span>Show this at checkout</span>
+                  </div>
                 ) : (
-                  <button onClick={handleRedeem} className="redeem-btn">
-                    Redeem for {selectedDeal.points} pts
+                  <button
+                    onClick={handleRedeem}
+                    className="dl-redeem"
+                    disabled={isMyDeal}
+                  >
+                    {isMyDeal
+                      ? "Already claimed"
+                      : `Redeem for ${selectedDeal.points} pts`}
                   </button>
                 )}
               </div>
@@ -185,102 +264,66 @@ const Deals = () => {
         )}
       </div>
 
-      <div className="rewards">
-        <div className="points-progress-container">
-          <div className="points-header">
-            <span>YOUR POINTS: {userPoints}</span>
-            <span>300</span>
-          </div>
-          <div className="points-bar">
-            <div
-              className="points-fill"
-              style={{ width: `${Math.min((userPoints / 300) * 100, 100)}%` }}
-            ></div>
+      <aside className="dl-rewards">
+        <h3 className="dl-rewards__title">Earn more points</h3>
+
+        <div className="dl-reward-card dl-reward-card--accent">
+          <img src={mystery} alt="Mystery Box" />
+          <div className="dl-reward-card__body">
+            <h4>Mystery Box</h4>
+            <p>50 pts a pop — could be anything</p>
+            <button className="dl-reward-card__btn">Open</button>
           </div>
         </div>
 
-        <div className="rewards-content">
-          <div className="rewards-list">
-            <div className="mystery-box-card">
-              <div className="box-left">
-                <img src={mystery} alt="Mystery Box" className="mystery-img" />
-              </div>
-              <div className="box-right">
-                <h3 className="box-title">Mystery Box</h3>
-                <p className="box-desc">50 pts/each</p>
-                <hr className="box-desc" />
-                <button className="buy-btn">OPEN</button>
-              </div>
-            </div>
-
-            <div className="bonus-tasks">
-              <div className="box-left">
-                <h4 className="box-title">Weekly Challenges</h4>
-                <p className="box-desc">Share a photo for 5 pts</p>
-                <p className="box-desc">Leave a review for 10 pts</p>
-                <button className="buy-btn">GO</button>
-              </div>
-              <div className="box-right">
-                <img src={task} alt="Bonus Task" className="bonus-img" />
-              </div>
-            </div>
-
-            <div className="referral-section">
-              <h4 className="box-title">Referral Bonus</h4>
-              <p className="box-desc">Invite your friends and earn 10 points</p>
-
-              <div className="box-desc referral-box">
-                <div className="referral-code">
-                  <label>Your Code</label>
-                  <div className="code">CHECKIN10</div>
-                </div>
-                <div className="referral-link">
-                  <label>Share Link</label>
-                  <input
-                    type="text"
-                    value="https://myapp.com/signup?ref=CHECKIN10"
-                    readOnly
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="monthly-board">
-            <h3 className="box-title">April's Wrap</h3>
-            <img src={present} alt="Rewards" className="rewards-img" />
-            <p className="board-highlight">Look what your friends got!</p>
-
-            <ol className="rank-list">
+        <div className="dl-reward-card">
+          <img src={task} alt="Weekly Challenges" />
+          <div className="dl-reward-card__body">
+            <h4>Weekly Challenges</h4>
+            <ul className="dl-challenge-list">
               <li>
-                <span className="rank-num">1</span>
-                <FaUserCircle className="avatar" />
-                <span className="name">User 1</span>
+                <FaCheckCircle /> Share a photo <span>+5</span>
               </li>
               <li>
-                <span className="rank-num">2</span>
-                <FaUserCircle className="avatar" />
-                <span className="name">User 2</span>
+                <FaCheckCircle /> Leave a review <span>+10</span>
               </li>
-              <li>
-                <span className="rank-num">3</span>
-                <FaUserCircle className="avatar" />
-                <span className="name">User 3</span>
-              </li>
-              <li>
-                <span className="rank-num">4</span>
-                <FaUserCircle className="avatar" />
-                <span className="name">User 4</span>
-              </li>
-              <li>
-                <span className="rank-num">5</span>
-                <FaUserCircle className="avatar" />
-                <span className="name">User 5</span>
-              </li>
-            </ol>
+            </ul>
+            <button className="dl-reward-card__btn">Go</button>
           </div>
         </div>
-      </div>
+
+        <div className="dl-reward-card dl-referral">
+          <h4>Refer a friend, get 10 pts</h4>
+          <div className="dl-referral__code">
+            <span>CHECKIN10</span>
+            <button type="button" onClick={copyReferral} aria-label="Copy code">
+              <FaRegCopy />
+            </button>
+          </div>
+          <input
+            type="text"
+            value="https://myapp.com/signup?ref=CHECKIN10"
+            readOnly
+          />
+        </div>
+
+        <div className="dl-leaderboard">
+          <h4>
+            <FaTrophy /> This month's winners
+          </h4>
+          <img src={present} alt="Rewards" />
+          <p className="dl-leaderboard__highlight">Look what your friends got!</p>
+          <ol>
+            {["User 1", "User 2", "User 3", "User 4", "User 5"].map((name, i) => (
+              <li key={i}>
+                <span className="dl-leaderboard__rank">{i + 1}</span>
+                <FaUserCircle className="dl-leaderboard__avatar" />
+                <span className="dl-leaderboard__name">{name}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </aside>
     </div>
   );
 };

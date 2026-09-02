@@ -1,138 +1,152 @@
-.card-horizontal {
+/* ===== Local card ===== */
+.lc-card {
   display: flex;
-  margin-top: 10px;
-  max-width: 100%;
-  height: 170px;
-  border-radius: 12px;
+  flex-direction: column;
+  text-align: left;
+  border: 1px solid #efe4dd;
+  border-radius: 18px;
   overflow: hidden;
-  background-color: transparent;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.card-info-wrapper {
-  flex: 1;
-  border: 2px solid transparent;
-  border-left: none;
-  border-radius: 0 12px 12px 0;
-  background-color: #fff;
-  transition: border 0.2s ease;
+.lc-card:hover {
+  transform: translateY(-4px);
+  border-color: #e6417d;
+  box-shadow: 0 16px 34px rgba(230, 65, 125, 0.18);
 }
 
-.card-info-wrapper:hover {
-  border: 2px solid #e6417d;
-  transition: border 0.2s ease;
-  border-left: none;
+.lc-card.is-selected {
+  border-color: #e6417d;
+  box-shadow: 0 0 0 2px #e6417d, 0 16px 34px rgba(230, 65, 125, 0.22);
 }
 
-.card-info-wrapper.selected {
-  border: 2px solid #e6417d;
-  border-left: none;
-}
-
-.card-info-wrapper.selected h3 {
-  color: #e6417d;
-}
-
-.card-image {
-  flex: 0 0 40%;
+.lc-card__media {
   position: relative;
-  overflow: hidden;
+  height: 160px;
 }
 
-.card-image img {
+.lc-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-@media screen and (max-width: 600px) {
-  .card-horizontal {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .card-image {
-    width: 100%;
-    height: 180px;
-  }
-
-  .card-info-wrapper {
-    border-radius: 0 0 8px 8px;
-    border-left: 2px solid transparent;
-    border-top: none;
-  }
-
-  .card-info-wrapper:hover {
-    border-left: 2px solid #e6417d;
-    border-top: none;
-  }
-
-  .card-info-wrapper.selected {
-    border-left: 2px solid #e6417d;
-    border-top: none;
-  }
+.lc-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(20, 8, 4, 0.55) 0%,
+    rgba(20, 8, 4, 0) 55%
+  );
 }
 
-.card-info {
-  padding: 12px 16px;
+.lc-card__rating {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.lc-card__rating svg {
+  color: #f7e15c;
+}
+
+.lc-card__love {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #e6417d;
+  font-size: 17px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.lc-card__love:hover {
+  transform: scale(1.1);
+}
+
+.lc-card__love.is-loved {
+  color: #e0115f;
+}
+
+.lc-card__body {
+  padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 100%;
+  gap: 8px;
 }
 
-.card-info h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+.lc-card__body h3 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.card-info .description {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 10px;
+.lc-card__desc {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #6b6b6b;
 }
 
-.card-info .meta {
+.lc-card__addr {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #9a9a9a;
 }
 
-.card-info .address {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.rating-container {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.rating {
+.lc-card__addr svg {
+  flex-shrink: 0;
+  margin-top: 2px;
   color: #e6417d;
-  font-weight: 500;
 }
 
-.icons {
-  display: flex;
-  gap: 10px;
-}
-
-.icon {
-  font-size: 18px;
+.lc-card__cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
   color: #e6417d;
   cursor: pointer;
+}
+
+.lc-card__cta svg {
   transition: transform 0.15s ease;
 }
 
-.icon:hover {
-  transform: scale(1.15);
-}
-
-.icon.loved {
-  color: #e0115f;
+.lc-card:hover .lc-card__cta svg {
+  transform: translateX(3px);
 }

@@ -5,13 +5,23 @@ import LocalsData from "./LocalsData";
 import { useLocation } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 
-import { FaPhone } from "react-icons/fa6";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaPhone, FaLocationDot, FaMagnifyingGlass } from "react-icons/fa6";
 import { BsGlobe } from "react-icons/bs";
 import { TiStarFullOutline } from "react-icons/ti";
+import { AiFillHeart } from "react-icons/ai";
 import { IoIosCloseCircle } from "react-icons/io";
 
 import "./Locals.css";
+
+const DAY_ORDER = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 const Locals = () => {
   const { favorites, toggleFavorite } = useUser();
@@ -36,7 +46,6 @@ const Locals = () => {
     }
   }, [state, locals]);
 
-  // ✅ Filter locals
   const filteredLocals = locals.filter((local) => {
     const matchesSearch = local.name
       .toLowerCase()
@@ -48,123 +57,135 @@ const Locals = () => {
   });
 
   return (
-    <div className="locals-page">
-      <div className="locals-list">
+    <div className="lc-page">
+      <div className="lc-main">
         {!infoLocal ? (
           <>
-            <div className="filter-buttons">
-              <button
-                className={!filteredByLove ? "active" : ""}
-                onClick={() => setFilteredByLove(false)}
-              >
-                OUR LOCALS
-              </button>
-              <button
-                className={filteredByLove ? "active" : ""}
-                onClick={() => setFilteredByLove(true)}
-              >
-                MY FAVORITES
-              </button>
+            <header className="lc-hero">
+              <div className="lc-hero__text">
+                <span className="lc-hero__eyebrow">
+                  <FaLocationDot /> Local Club
+                </span>
+                <h1>
+                  Meet the <span>neighborhood</span>
+                </h1>
+                <p>
+                  The independent shops, kitchens and makers that make this
+                  town ours.
+                </p>
+              </div>
+
+              <div className="lc-hero__stat">
+                <div className="lc-hero__stat-num">{locals.length}</div>
+                <div className="lc-hero__stat-label">local spots</div>
+              </div>
+            </header>
+
+            <div className="lc-controls">
+              <div className="lc-tabs">
+                <button
+                  className={!filteredByLove ? "is-active" : ""}
+                  onClick={() => setFilteredByLove(false)}
+                >
+                  <FaLocationDot /> Our Locals
+                </button>
+                <button
+                  className={filteredByLove ? "is-active" : ""}
+                  onClick={() => setFilteredByLove(true)}
+                >
+                  <AiFillHeart /> My Favorites
+                </button>
+              </div>
+
+              <div className="lc-search">
+                <FaMagnifyingGlass />
+                <input
+                  type="text"
+                  placeholder="Search locals…"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search locals..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-
-            {filteredLocals.map((local, index) => (
-              <LocalsCard
-                key={index}
-                local={local}
-                onClick={() => setSelectedLocal(local)}
-                onInfoClick={() => {
-                  setInfoLocal(local);
-                }}
-                selected={selectedLocal?.name === local.name}
-                isLoved={favorites.includes(local.name)}
-                onLoveToggle={() => toggleFavorite(local.name)}
-              />
-            ))}
+            {filteredLocals.length > 0 ? (
+              <div className="lc-grid">
+                {filteredLocals.map((local, index) => (
+                  <LocalsCard
+                    key={index}
+                    local={local}
+                    onClick={() => setSelectedLocal(local)}
+                    onInfoClick={() => setInfoLocal(local)}
+                    selected={selectedLocal?.name === local.name}
+                    isLoved={favorites.includes(local.name)}
+                    onLoveToggle={() => toggleFavorite(local.name)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="lc-empty">
+                <FaLocationDot />
+                <p>
+                  {filteredByLove
+                    ? "No favorites yet — tap the heart on a spot you love."
+                    : "No locals match that search."}
+                </p>
+              </div>
+            )}
           </>
         ) : (
-          <div className="info-panel">
-            <IoIosCloseCircle
-              className="close-btn"
+          <div className="lc-detail">
+            <button
+              type="button"
+              className="lc-detail__close"
               onClick={() => setInfoLocal(null)}
-            />
+            >
+              <IoIosCloseCircle />
+            </button>
 
-            <img
-              src={infoLocal.image}
-              alt={infoLocal.name}
-              className="info-img"
-            />
+            <div className="lc-detail__media">
+              <img src={infoLocal.image} alt={infoLocal.name} />
+              <span className="lc-detail__rating">
+                <TiStarFullOutline /> {infoLocal.rating}
+              </span>
+            </div>
 
-            <div className="info-description">
-              <div className="info-header">
-                <h2>{infoLocal.name}</h2>
-                <h2 className="rating">
-                  <TiStarFullOutline /> {infoLocal.rating}
-                </h2>
+            <div className="lc-detail__body">
+              <h2>{infoLocal.name}</h2>
+
+              <div className="lc-detail__lines">
+                <a className="lc-detail__line" href={`tel:${infoLocal.tel}`}>
+                  <FaPhone /> {infoLocal.tel}
+                </a>
+                <a
+                  className="lc-detail__line"
+                  href={infoLocal.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BsGlobe /> Visit website
+                </a>
+                <a
+                  className="lc-detail__line"
+                  href={infoLocal.mapURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaLocationDot /> {infoLocal.address}
+                </a>
               </div>
 
-              <hr />
-
-              <div className="info-line">
-                <span>
-                  <FaPhone />{" "}
-                  <a href={`tel:${infoLocal.tel}`}>{infoLocal.tel}</a>
-                </span>
-              </div>
-
-              <div className="info-line">
-                <span>
-                  <BsGlobe />{" "}
-                  <a
-                    href={infoLocal.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {infoLocal.name}
-                  </a>
-                </span>
-              </div>
-
-              <div className="info-line">
-                <span>
-                  <FaLocationDot />{" "}
-                  <a
-                    href={infoLocal.mapURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {infoLocal.address}
-                  </a>
-                </span>
-              </div>
-
-              <hr />
-
-              <ul className="hours-list">
+              <h4 className="lc-detail__hours-title">Opening hours</h4>
+              <ul className="lc-hours">
                 {Object.entries(infoLocal.hours)
-                  .sort(([dayA], [dayB]) => {
-                    const order = [
-                      "Monday",
-                      "Tuesday",
-                      "Wednesday",
-                      "Thursday",
-                      "Friday",
-                      "Saturday",
-                      "Sunday",
-                    ];
-                    return order.indexOf(dayA) - order.indexOf(dayB);
-                  })
+                  .sort(
+                    ([dayA], [dayB]) =>
+                      DAY_ORDER.indexOf(dayA) - DAY_ORDER.indexOf(dayB),
+                  )
                   .map(([day, time]) => (
                     <li key={day}>
-                      <strong>{day}</strong> {time}
+                      <span className="lc-hours__day">{day}</span>
+                      <span className="lc-hours__time">{time}</span>
                     </li>
                   ))}
               </ul>
@@ -173,7 +194,7 @@ const Locals = () => {
         )}
       </div>
 
-      <div className="locals-map-section">
+      <div className="lc-map">
         <LocalsMap
           locals={filteredLocals}
           selectedLocal={selectedLocal}

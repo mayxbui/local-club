@@ -46,7 +46,7 @@ const LocalsMap = ({ locals, selectedLocal, setSelectedLocal }) => {
             position={{ lat: local.lat, lng: local.lng }}
             icon={{
               url: isSelected ? redPin : redDot,
-              scaledSize: isSelected ? { width: 50, height: 50 } : { width: 40, height: 40 },
+              scaledSize: isSelected ? { width: 30, height: 30 } : { width: 20, height: 20 },
             }}
             onClick={() => setSelectedLocal(local)}
             title={local.name}

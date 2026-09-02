@@ -54,6 +54,17 @@
   font-size: 13px;
 }
 
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-container .icon {
+  font-size: 16px;
+  color: #e6417d;
+}
+
 .icons {
   display: flex;
   font-size: 13px;

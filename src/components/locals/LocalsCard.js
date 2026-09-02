@@ -1,55 +1,57 @@
-import React from 'react';
-import { AiOutlineInfoCircle, AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import React from "react";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { TiStarFullOutline } from "react-icons/ti";
-import './LocalsCard.css';
+import { FaLocationDot, FaArrowRight } from "react-icons/fa6";
+import "./LocalsCard.css";
 
-const LocalsCard = ({ local, onClick, onInfoClick, onLoveToggle, isLoved, selected }) => {
+const LocalsCard = ({
+  local,
+  onClick,
+  onInfoClick,
+  onLoveToggle,
+  isLoved,
+  selected,
+}) => {
   return (
-    <div className="card-horizontal" onClick={onClick}>
-      <div className="card-image">
+    <div
+      className={`lc-card ${selected ? "is-selected" : ""}`}
+      onClick={onClick}
+    >
+      <div className="lc-card__media">
         <img src={local.image} alt={local.name} />
+        <span className="lc-card__scrim" />
+        <span className="lc-card__rating">
+          <TiStarFullOutline /> {local.rating}
+        </span>
+        <button
+          type="button"
+          className={`lc-card__love ${isLoved ? "is-loved" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onLoveToggle();
+          }}
+          aria-label={isLoved ? "Remove from favorites" : "Add to favorites"}
+        >
+          {isLoved ? <AiFillHeart /> : <AiOutlineHeart />}
+        </button>
       </div>
-      <div className={`card-info-wrapper ${selected ? 'selected' : ''}`}>
-        <div className="card-info">
-          <h3>{local.name}</h3>
-          <p className="description">{local.shortDescription}</p>
-          <p className="address">{local.address}</p>
-          <div className="meta">
-            <span className="rating-container">
-              <TiStarFullOutline className="icon" />
-              <div className="rating">{local.rating}</div>
-            </span>
-            <span className="icons">
-              <AiOutlineInfoCircle 
-                className="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onInfoClick();
-                }}
-                title="More Info"
-              />
-              {isLoved ? (
-                <AiFillHeart
-                  className="icon loved"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onLoveToggle();
-                  }}
-                  title="Unfavorite"
-                />
-              ) : (
-                <AiOutlineHeart
-                  className="icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onLoveToggle();
-                  }}
-                  title="Favorite"
-                />
-              )}
-            </span>
-          </div>
-        </div>
+
+      <div className="lc-card__body">
+        <h3>{local.name}</h3>
+        <p className="lc-card__desc">{local.shortDescription}</p>
+        <p className="lc-card__addr">
+          <FaLocationDot /> {local.address}
+        </p>
+        <button
+          type="button"
+          className="lc-card__cta"
+          onClick={(e) => {
+            e.stopPropagation();
+            onInfoClick();
+          }}
+        >
+          View details <FaArrowRight />
+        </button>
       </div>
     </div>
   );
