@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaMapMarkerAlt, FaQrcode, FaTags, FaStore } from "react-icons/fa";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { TiStarFullOutline } from "react-icons/ti";
@@ -172,9 +172,9 @@ function Home() {
             <h2>Popular downtown</h2>
             <p>The highest-rated spots on the square right now.</p>
           </div>
-          <a href="/locals" className="home-section__link">
+          <Link to="/locals" className="home-section__link">
             View all <FaArrowRight />
-          </a>
+          </Link>
         </div>
         <div className="home-popular">
           {topRated.map((local) => {
@@ -238,9 +238,9 @@ function Home() {
                 </li>
               ))}
             </ul>
-            <a href="/locals" className="home-section__link">
+            <Link to="/locals" className="home-section__link">
               Open the full map <FaArrowRight />
-            </a>
+            </Link>
           </div>
           <div className="home-map__frame">
             <LocalsMap

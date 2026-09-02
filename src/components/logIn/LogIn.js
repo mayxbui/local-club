@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LogIn.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -8,6 +9,7 @@ import {toast} from "react-toastify";
 import logo from "../../assets/local_club_logo.png";
 
 const LogIn = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,10 +23,10 @@ const LogIn = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in successfully");
-      window.location.href="/home";
       toast.success("User logged in successfully", {
         position: "top-center",
-      })
+      });
+      navigate("/home");
     } catch (error) {
       console.log(error.message);
       toast.error(error.message, {
@@ -84,7 +86,7 @@ const LogIn = () => {
           </button>
 
           <div className="register-link">
-            New User? <a href="register">Register</a>
+            New User? <Link to="/register">Register</Link>
           </div>
         </form>
       </div>

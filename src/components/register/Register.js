@@ -1,4 +1,5 @@
-import useState from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../logIn/LogIn.css';
 import {auth, db} from "../Firebase";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -101,7 +102,7 @@ const Register = () => {
 
 
       <div className="register-link">
-        Already have an account? <a href="login">Log In</a>
+        Already have an account? <Link to="/login">Log In</Link>
       </div>
     </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { db } from '../Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import './HomePageSlider.css';
@@ -26,7 +27,7 @@ const DealsSlider = () => {
     <div className="local-business-slider-section">
       <div className="slider-header">
         <h3>Hot Deals</h3>
-        <a href="/deals" className="show-more">SHOW MORE <FaArrowRight /></a>
+        <Link to="/deals" className="show-more">SHOW MORE <FaArrowRight /></Link>
       </div>
       <div className="horizontal-scroll-container">
         {deals.map(deal => (
