@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import '../logIn/LogIn.css';
 import {auth, db} from "../Firebase";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
