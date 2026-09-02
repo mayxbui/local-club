@@ -4,7 +4,8 @@ A two-sided web app for a small downtown: shoppers discover local businesses and
 loyalty points, merchants check customers in from their own device. Built as a hackathon
 project and since rebuilt into a cleaner, more resilient version.
 
-**Live demo:** _add URL_ · **Stack:** React 19 · React Router 7 · Firebase (Auth + Firestore) · Google Maps · CI/CD via GitHub Actions
+**Live demo:** _add URL_
+**Stack:** React 19 · React Router 7 · Firebase (Auth + Firestore) · Google Maps · CI/CD via GitHub Actions
 
 ---
 

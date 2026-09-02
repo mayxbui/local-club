@@ -102,7 +102,7 @@ const Register = () => {
 
 
       <div className="register-link">
-        Already have an account? <Link to="/login">Log In</Link>
+        Already have an account? <a href="login">Log In</a>
       </div>
     </div>
     </div>

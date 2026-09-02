@@ -9,7 +9,7 @@ import Scan from './components/scan/Scan';
 import Deals from './components/deals/Deals';
 import CheckIn from './components/checkin/CheckIn';
 
-import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useUser } from './components/contexts/UserContext';
 

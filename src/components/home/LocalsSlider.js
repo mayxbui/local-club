@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { db } from '../Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import LocalBusinessCard from './LocalsCard';
@@ -26,7 +25,7 @@ const LocalBusinessSlider = () => {
     <div className="local-business-slider-section">
       <div className="slider-header">
         <h3>Local Business</h3>
-        <Link to="/locals" className="show-more">SHOW MORE <FaArrowRight /></Link>
+        <a href="/locals" className="show-more">SHOW MORE <FaArrowRight /></a>
       </div>
       <div className="horizontal-scroll-container">
         {locals.map((local) => (
