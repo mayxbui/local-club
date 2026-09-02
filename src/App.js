@@ -9,7 +9,7 @@ import Scan from './components/scan/Scan';
 import Deals from './components/deals/Deals';
 import CheckIn from './components/checkin/CheckIn';
 
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useUser } from './components/contexts/UserContext';
 
@@ -22,9 +22,9 @@ function AppWrapper() {
 }
 
 function AppContent() {
-  const { userDetails, loading } = useUser();
+  const { loading } = useUser();
   const location = useLocation();
-  const hideNavBarOn = ['/', '/login', '/register', '/checkin'];
+  const hideNavBarOn = ['/login', '/register', '/checkin'];
 
   if (loading) return <p>Loading...</p>;
 
@@ -33,7 +33,7 @@ function AppContent() {
       {!hideNavBarOn.includes(location.pathname) && <NavBar />}
 
       <Routes>
-        <Route path="/" element={userDetails ? <Navigate to="/home" /> : <LogIn />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
