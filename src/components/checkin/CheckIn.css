@@ -1,0 +1,156 @@
+.checkin {
+  min-height: 100vh;
+  background: #f6f4f0;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 18px 48px;
+}
+
+.checkin__bar {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.checkin__bar h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #e6417d;
+}
+
+.checkin__bar p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+.checkin__stage {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  min-height: 420px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkin__reader {
+  width: 100%;
+}
+
+.checkin__reader.is-hidden {
+  display: none;
+}
+
+/* html5-qrcode injects its own controls / video */
+.checkin__reader video {
+  border-radius: 20px 20px 0 0;
+  display: block;
+}
+
+.checkin__panel {
+  padding: 34px 26px;
+  text-align: center;
+  width: 100%;
+}
+
+.checkin__panel h2 {
+  margin: 6px 0 4px;
+  font-size: 26px;
+}
+
+.checkin__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7a24;
+}
+
+.checkin__balance {
+  margin: 0 0 22px;
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+.checkin__points {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.checkin__points button {
+  flex: 1;
+  max-width: 100px;
+  padding: 16px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: #e6417d;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.checkin__points button:hover:not(:disabled) {
+  background: #c9356a;
+  transform: translateY(-2px);
+}
+
+.checkin__points button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.checkin__link {
+  background: none;
+  border: none;
+  color: #9a9a9a;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.checkin__primary {
+  margin-top: 8px;
+  padding: 14px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #e6417d;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.checkin__primary:hover {
+  background: #c9356a;
+}
+
+.checkin__panel--ok .checkin__check {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: #eef3d6;
+  color: #6b7a24;
+  font-size: 30px;
+  line-height: 60px;
+}
+
+.checkin__panel--error {
+  color: #c9356a;
+}
+
+.checkin__panel--error small {
+  display: block;
+  margin-top: 8px;
+  color: #9a9a9a;
+  word-break: break-word;
+}

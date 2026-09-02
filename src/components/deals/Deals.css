@@ -1,0 +1,329 @@
+.deals-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.deals-list {
+  flex: 1 1 45%;
+  min-width: 320px;
+  max-width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.rewards {
+  flex: 1 1 55%;
+  box-sizing: border-box;
+  height: 100vh;
+  min-width: 300px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.rewards-list {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.monthly-board {
+  flex: 1 1 50%;
+  width: 100%;
+  background-color: #e6417d;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+  .deals-page {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .deals-list,
+  .rewards {
+    flex: 1 1 100%;
+    width: 100%;
+    height: auto;
+    min-width: unset;
+  }
+
+  .rewards-content {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.tab-buttons {
+  display: flex;
+  margin: 1rem 0;
+  gap: 0px;
+}
+
+.tab-buttons button {
+  flex: 1;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: none;
+  background-color: #fff;
+  color: #e6417d;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tab-buttons button.active {
+  background-color: #e6417d;
+  color: #fff;
+}
+
+/* points bar */
+
+.points-progress-container {
+  margin: 20px 0px;
+}
+
+.points-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.points-bar {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.points-fill {
+  height: 100%;
+  background: linear-gradient(to right, #e6417d, #e6417d);
+  border-radius: 8px 0 0 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+/* mystery box */
+.mystery-box-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e6417d;
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+}
+
+.mystery-img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* bonus tasks */
+.bonus-tasks {
+  display: flex;
+  justify-content: space-between;
+  background-color: #e6417d;
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+}
+
+.bonus-img {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* referral section */
+.referral-section {
+  justify-content: space-between;
+  background-color: #e6417d;
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+}
+
+.referral-box {
+  display: flex;
+  gap: 10px;
+}
+
+.referral-code,
+.referral-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.referral-code label,
+.referral-link label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.referral-code {
+  flex: 0 0 auto;
+}
+
+.referral-link {
+  flex: 1;
+}
+
+.referral-link input {
+  color: #666;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.code {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color:#666;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+/* monthly board */
+.rewards-img {
+  width: 200px;
+  height: auto;
+  margin: 10px;
+}
+
+.board-highlight {
+  margin: 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.rank-list {
+  list-style: none;
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+  color: #333;
+}
+
+.rank-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid #ccc;
+}
+
+.rank-num {
+  font-weight: bold;
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  color: #e6417d;
+  object-fit: cover;
+}
+
+.name {
+  font-weight: bold;
+  position: relative;
+  flex: 1;
+}
+
+.rewards-content {
+  display: flex;
+  gap: 10px;
+}
+
+/* deal info panel */
+.redeem-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #e6417d;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.barcode {
+  width: 100%;
+  height: auto;
+}
+
+.info-columns {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.info-line ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.box-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.box-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.buy-btn {
+  background-color: #fff;
+  color: #e6417d;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.box-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.box-desc {
+  font-size: 14px;
+  color: #fff;
+}

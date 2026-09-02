@@ -1,0 +1,22 @@
+.card-info .tagline {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.card-info .discounts {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.points-btn, .use-now-btn {
+  background-color: #e6417d;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: auto;
+}
+

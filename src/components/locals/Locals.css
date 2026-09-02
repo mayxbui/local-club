@@ -1,0 +1,200 @@
+.locals-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.locals-list {
+  flex: 1 1 45%;
+  min-width: 320px;
+  max-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.locals-map-section {
+  flex: 1 1 55%;
+  min-width: 300px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .locals-page {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .locals-list,
+  .locals-map-section {
+    flex: 1 1 100%;
+    width: 100%;
+    height: auto;
+    min-width: unset;
+  }
+
+  .map-container {
+    height: 400px;
+  }
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.no-results-card {
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  background-color: #fefefe;
+}
+
+.no-results-card .card-info.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.no-results-card h3 {
+  margin: 0;
+  color: #444;
+}
+
+.no-results-card .description {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #777;
+}
+
+.info-panel {
+  background: #fff;
+  max-height: 95vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.info-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rating {
+  color: #e6417d;
+}
+
+.info-line {
+  font-size: 14px;
+  margin: 8px 0;
+  flex: 1;
+
+}
+
+.info-line a {
+  color: #444;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 12px 0;
+}
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-description {
+  margin: 0 12px;
+}
+
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #ccc;
+}
+
+.day {
+  font-weight: 600;
+  color: #333;
+}
+
+.time {
+  color: #666;
+}
+  
+.close-btn {
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  border: none;
+  background: transparent;
+  cursor: pointer;  
+}
+
+.filter-buttons {
+  display: flex;
+  margin: 1rem 0;
+  gap: 0px;
+}
+
+.filter-buttons button {
+  flex: 1;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: none;
+  background-color: #fff;
+  color: #e6417d;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.filter-buttons button.active {
+  background-color: #e6417d;
+  color: #fff;
+}
+  
